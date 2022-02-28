@@ -80,9 +80,9 @@
     @try {
       NSLog(@"connect device begin -> %@", [device objectForKey:@"name"]);
       CBPeripheral *peripheral = [_scannedPeripherals objectForKey:[device objectForKey:@"address"]];
-        
+      __weak __typeof(self) weakSelf = self;
       self.state = ^(ConnectState state) {
-        [self updateConnectState:state];
+        [weakSelf updateConnectState:state];
       };
       [Manager connectPeripheral:peripheral options:nil timeout:2 connectBlack: self.state];
       
