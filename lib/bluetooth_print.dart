@@ -20,10 +20,10 @@ class BluetoothPrint {
       StreamController.broadcast();
 
   BluetoothPrint._() {
-    _channel.setMethodCallHandler((MethodCall call) {
+    _channel.setMethodCallHandler((MethodCall call) async{
       _methodStreamController.add(call);
       return;
-    } as Future<dynamic> Function(MethodCall)?);
+    });
   }
 
   static BluetoothPrint _instance = new BluetoothPrint._();
@@ -51,7 +51,7 @@ class BluetoothPrint {
   PublishSubject _stopScanPill = new PublishSubject();
 
   /// Gets the current state of the Bluetooth module
-  Stream<int> get state async* {
+  Stream<int?> get state async* {
     yield await _channel.invokeMethod('state').then((s) => s);
 
     yield* _stateChannel.receiveBroadcastStream().map((s) => s);
