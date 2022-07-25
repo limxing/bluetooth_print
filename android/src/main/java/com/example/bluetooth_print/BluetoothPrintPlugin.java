@@ -348,7 +348,7 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
     /**
      * 连接
      */
-    private void connect(Result result, Map<String, Object> args) {
+    private void connect(final Result result, Map<String, Object> args) {
         if (args.containsKey("address")) {
             String address = (String) args.get("address");
             disconnect();
@@ -365,11 +365,11 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
             threadPool.addSerialTask(new Runnable() {
                 @Override
                 public void run() {
-                    DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort();
+                    DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort(result);
                 }
             });
 
-            result.success(true);
+//            result.success(true);
         } else {
             result.error("invalid_argument", "argument 'address' not found", null);
         }
