@@ -23,7 +23,7 @@ public class PrintContent {
             //初始化打印机
             esc.addInitializePrinter();
             //打印走纸多少个单位
-            esc.addPrintAndFeedLines((byte) 3);
+//            esc.addPrintAndFeedLines((byte) 3);
 
             // {type:'text|barcode|qrcode|image', content:'', size:4, align: 0|1|2, weight: 0|1, width:0|1, height:0|1, underline:0|1, linefeed: 0|1}
             for (Map<String,Object> m: list) {
@@ -72,7 +72,7 @@ public class PrintContent {
                   }else if("image".equals(type)){
                         byte[] bytes = Base64.decode(content, Base64.DEFAULT);
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        esc.addRastBitImage(bitmap, 576, 0);
+                        esc.addRastBitImage(bitmap, width, 0);
                   }
 
                   if(linefeed == 1){
@@ -83,7 +83,7 @@ public class PrintContent {
             }
 
             //打印走纸n个单位
-            esc.addPrintAndFeedLines((byte) 4);
+            esc.addPrintAndFeedLines((byte) 10);
 
             // 开钱箱
             esc.addGeneratePlus(LabelCommand.FOOT.F2, (byte) 255, (byte) 255);
