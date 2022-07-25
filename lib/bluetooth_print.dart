@@ -141,8 +141,7 @@ class BluetoothPrint {
       return m.toJson();
     }).toList();
 
-    _channel.invokeMethod('printReceipt', args);
-    return Future.value(true);
+    return _channel.invokeMethod('printReceipt', args);
   }
 
   Future<dynamic> printLabel(Map<String, dynamic> config, List<LineText> data) {
@@ -152,9 +151,11 @@ class BluetoothPrint {
       return m.toJson();
     }).toList();
 
-    _channel.invokeMethod('printLabel', args);
-    return Future.value(true);
+    return _channel.invokeMethod('printLabel', args);
   }
 
   Future<dynamic> printTest() => _channel.invokeMethod('printTest');
+
+  ///获取当前是什么模式
+  Future<String?> get printModel => _channel.invokeMethod('printModel');
 }

@@ -127,6 +127,12 @@
      } @catch(FlutterError *e) {
        result(e);
      }
+  }else if([@"printModel"  isEqualToString:call.method]){
+        @try {
+         result("null");
+       } @catch(FlutterError *e) {
+         result(e);
+       }
   }
 }
 

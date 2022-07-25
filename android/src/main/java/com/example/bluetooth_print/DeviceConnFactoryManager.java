@@ -14,6 +14,7 @@ import java.util.Vector;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import io.flutter.plugin.common.MethodChannel.Result;
 
 public class DeviceConnFactoryManager {
 
@@ -116,6 +117,17 @@ public class DeviceConnFactoryManager {
     private final int ESC = 1;
     private final int TSC = 3;
     private final int CPCL = 2;
+
+    public String printModel() {
+        if(currentPrinterCommand == PrinterCommand.ESC){
+            return "ESC";
+        }else if(currentPrinterCommand == PrinterCommand.TSC){
+            return "TSC";
+        }else{
+            return "null";
+        }
+    }
+
     public enum CONN_METHOD {
         //蓝牙连接
         BLUETOOTH("BLUETOOTH"),
@@ -147,7 +159,7 @@ public class DeviceConnFactoryManager {
      *
      * @return
      */
-    public void openPort() {
+    public void openPort(Result result) {
         deviceConnFactoryManagers[id].isOpenPort = false;
 
         switch (deviceConnFactoryManagers[id].connMethod) {
@@ -170,7 +182,7 @@ public class DeviceConnFactoryManager {
             default:
                 break;
         }
-
+        result.success(isOpenPort);
         //端口打开成功后，检查连接打印机所使用的打印机指令ESC、TSC
         if (isOpenPort) {
             queryCommand();

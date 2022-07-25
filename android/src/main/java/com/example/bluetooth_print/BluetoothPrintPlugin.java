@@ -212,6 +212,9 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       case "printTest":
         printTest(result);
         break;
+      case "printModel":
+        result.success(DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].printModel());
+        break;
       default:
         result.notImplemented();
         break;
@@ -319,7 +322,7 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
   /**
    * 连接
    */
-  private void connect(Result result, Map<String, Object> args){
+  private void connect(final Result result, Map<String, Object> args){
     if (args.containsKey("address")) {
       String address = (String) args.get("address");
       disconnect();
@@ -336,11 +339,9 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       threadPool.addSerialTask(new Runnable() {
         @Override
         public void run() {
-          DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort();
+          DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort(result);
         }
       });
-
-      result.success(true);
     } else {
       result.error("invalid_argument", "argument 'address' not found", null);
     }
@@ -394,8 +395,9 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
   private void print(Result result, Map<String, Object> args) {
     if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] == null ||
             !DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getConnState()) {
-
-      result.error("not connect", "state not right", null);
+      result.success(false);
+//      result.error("not connect", "state not right", null);
+      return;
     }
 
     if (args.containsKey("config") && args.containsKey("data")) {
@@ -404,7 +406,6 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       if(list == null){
         return;
       }
-
       threadPool = ThreadPool.getInstantiation();
       threadPool.addSerialTask(new Runnable() {
         @Override
@@ -418,6 +419,7 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
           }
         }
       });
+      result.success(true);
     }else{
       result.error("please add config or data", "", null);
     }
