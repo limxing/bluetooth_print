@@ -129,7 +129,7 @@
      }
   }else if([@"printModel"  isEqualToString:call.method]){
         @try {
-         result("null");
+         result(@"null");
        } @catch(FlutterError *e) {
          result(e);
        }
