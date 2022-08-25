@@ -258,7 +258,7 @@
             case CONNECT_STATE_CONNECTING:
                 NSLog(@"status -> %@", @"连接状态：连接中....");
                 ret = @0;
-                break;
+                return;
             case CONNECT_STATE_CONNECTED:
                 NSLog(@"status -> %@", @"连接状态：连接成功");
                 ret = @1;
@@ -274,10 +274,9 @@
             default:
                 NSLog(@"status -> %@", @"连接状态：连接超时");
                 ret = @0;
-                break;
+                return;
         }
-        
-         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:ret,@"id",nil];
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:ret,@"id",nil];
         if(_stateStreamHandler.sink != nil) {
           self.stateStreamHandler.sink([dict objectForKey:@"id"]);
         }
