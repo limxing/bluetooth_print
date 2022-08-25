@@ -178,7 +178,7 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
                 result.success(mBluetoothAdapter.isEnabled());
                 break;
             case "isConnected":
-                result.success(threadPool != null);
+                result.success(DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] != null && DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].mPort != null);
                 break;
             case "startScan": {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
